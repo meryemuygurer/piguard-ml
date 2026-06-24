@@ -11,23 +11,33 @@ injection_examples = df[df["label"] == "injection"]["text"].tolist()
 
 def generate_examples(label, examples, count=50):
     example_str = "\n".join([f'- "{ex}"' for ex in examples[:10]])
+    
     prompt = f"""The following are "{label}" labeled student inputs for an educational chatbot:
-    {example_str}
-    Generate {count} new examples similar to these.
-    - Mix Turkish and English inputs
-    - Make each example unique
-    - Return only a JSON array, nothing else
 
-    Format: ["örnek1", "örnek2", ...]"""
+{example_str}
+
+Generate {count} new examples similar to these.
+- Mix Turkish and English inputs
+- Make each example unique
+- Return ONLY a JSON array, no explanation, no markdown, no backticks
+
+Format: ["example1", "example2", ...]"""
 
     message = client.messages.create(
         model="claude-sonnet-4-6",
         max_tokens=4000,
         messages=[{"role": "user", "content": prompt}]
     )
-
-    response_text = message.content[0].text
-    examples_list = json.loads(response_text)
+    
+    response_text = message.content[0].text.strip()
+    
+    # after a problem: clean markdown backticks if present !!!
+    if response_text.startswith("```"):
+        response_text = response_text.split("```")[1]
+        if response_text.startswith("json"):
+            response_text = response_text[4:]
+    
+    examples_list = json.loads(response_text.strip())
     return examples_list
 
 print("Generating safe examples...")
