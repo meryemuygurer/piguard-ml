@@ -12,6 +12,7 @@ PIGUARD-ML addresses this by placing a lightweight DistilBERT-based classifier b
 
 ​```
 Student Input → PIGuard Classifier → [SAFE] → LLM → Response
+
                                    → [BLOCKED] → Warning Message
 ​```
 
