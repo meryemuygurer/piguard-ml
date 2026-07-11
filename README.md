@@ -8,9 +8,15 @@ Students interacting with AI-powered educational assistants may attempt to manip
 
 PIGUARD-ML addresses this by placing a lightweight DistilBERT-based classifier between the student and the LLM. Suspicious inputs are blocked before reaching the main model.
 
+## Demo
+
+![ALLOWED example](assets/demo_allowed.png)
+![BLOCKED example](assets/demo_blocked.png)
+
 ## Architecture
 
 ​```
+
 Student Input → PIGuard Classifier → [SAFE] → LLM → Response
 
                                    → [BLOCKED] → Warning Message
@@ -45,6 +51,7 @@ Results reflect synthetic dataset performance. Real-world accuracy may vary with
 
 
 ## Project Structure
+```
 piguard-ml/
 ├── data/
 │ └── dataset.csv
@@ -58,6 +65,7 @@ piguard-ml/
 │ └── app.py
 └── templates/
 └── index.html
+```
 
 
 ## Related Work
